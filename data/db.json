@@ -1,0 +1,10 @@
+{
+  "ids": {
+    "TableTennisGame": 2
+  },
+  "models": {
+    "TableTennisGame": {
+      "0": "{\"id\":\"0\",\"name\":\"Random Game: 0\",\"pointsFirstPlayer\":9,\"pointsSecondPlayer\":1}"
+    }
+  }
+}
