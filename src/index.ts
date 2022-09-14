@@ -1,13 +1,13 @@
 
 import {RestServer} from '@loopback/rest';
 import {SocketIoOptions} from '@loopback/socketio';
-import {App} from './app';
+import {BoardBackendApplication} from './app';
 import {ApplicationConfig} from './application';
 export * from './application';
 export {app};
-let app!: App;
+let app!: BoardBackendApplication;
 export async function main(options: ApplicationConfig = {}) {
-  app = new App(options);
+  app = new BoardBackendApplication(options);
   await app.boot();
   await app.start();
   console.log(app.contains('server.socketio'))

@@ -1,33 +1,42 @@
 
-/*import {
- Client, createRestAppClient,
- givenHttpServerConfig
+import {RestServer} from '@loopback/rest';
+import {SocketIoOptions} from '@loopback/socketio';
+import {
+  Client, createRestAppClient, givenHttpServerConfig
 } from '@loopback/testlab';
-import {TestowinoApplication} from '../../application.js';
+import {BoardBackendApplication} from '../../app';
 
 export async function setupApplication(): Promise<AppWithClient> {
- const restConfig = givenHttpServerConfig({
-   // Customize the server configuration here.
-   // Empty values (undefined, '') will be ignored by the helper.
-   //
-   // host: process.env.HOST,
-   // port: +process.env.PORT,
- });
+  const restConfig = givenHttpServerConfig({
+    // Customize the server configuration here.
+    // Empty values (undefined, '') will be ignored by the helper.
+    //
+    // host: process.env.HOST,
+    rest: {
+      port: +(process.env.PORT ?? 3001),
+    },
+    socketIoOptions: {
+      port: 4001,
+      cors: {
+        origin: '*',
+      },
+    } as SocketIoOptions,
+  } as any);
 
- const app = new TestowinoApplication({
-   rest: restConfig,
- });
+  const app = new BoardBackendApplication({
+    rest: restConfig,
+  });
 
- await app.boot();
- await app.start();
+  await app.boot();
+  await app.start();
+  const server = await app.getServer(RestServer);
+  const client = createRestAppClient({restServer: server})
 
- const client = createRestAppClient(app);
-
- return {app, client};
+  return {app, client};
 }
 
 export interface AppWithClient {
- app: TestowinoApplication;
- client: Client;
+  app: BoardBackendApplication;
+  client?: Client;
 }
-*/
+

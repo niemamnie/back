@@ -5,7 +5,7 @@ import {RestComponent} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import {SocketIoBooter, SocketIoComponent} from '@loopback/socketio';
 
-export class App extends BootMixin(ServiceMixin(RepositoryMixin(Application))) {
+export class BoardBackendApplication extends BootMixin(ServiceMixin(RepositoryMixin(Application))) {
   constructor(config: ApplicationConfig) {
     super(config);
     this.projectRoot = __dirname;
