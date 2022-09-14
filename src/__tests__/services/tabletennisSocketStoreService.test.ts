@@ -3,7 +3,7 @@ import sinon from 'sinon';
 import TableTennisSocket from '../../intern/TableTennisSocket';
 import {TabletennisSocketStoreService} from '../../services';
 import {TabletennisSocketPaths} from '../../ws-controllers/TabletennisSocketPaths';
-import {givenListOfSocketData} from '../fixtures/helpers/tabletennisSocekt.helper';
+import {givenListOfSocketData, givenTabletennisSocketData} from '../fixtures/helpers/tabletennisSocekt.helper';
 describe('Tabletennis Socket Service', () => {
   let socketStoreService = new TabletennisSocketStoreService()
 
@@ -15,6 +15,13 @@ describe('Tabletennis Socket Service', () => {
     registerAll(givenListOfSocketData(5));
 
     expect(socketStoreService.size).to.eql(5);
+  })
+
+  it('should ignore socket without socket.tabletennis prop', () => {
+    socketStoreService.add(
+      givenTabletennisSocketData({tabletennis: undefined})
+    )
+    expect(socketStoreService.size).to.equal(0)
   })
 
   it('should remember multiple sockets for multiple games', () => {
@@ -53,6 +60,20 @@ describe('Tabletennis Socket Service', () => {
     expect(found).to.undefined()
   })
 
+  it('should do nothing when socket.tabletennis is undefined', () => {
+    const mock = sinon.mock(socketStoreService['sockets'])
+    mock.expects('get').atMost(0);
+    socketStoreService.remove({} as unknown as TableTennisSocket)
+    mock.verify();
+  })
+
+  it('should do nothing when sockets were not found', () => {
+    const mock = sinon.mock(socketStoreService['sockets'])
+    mock.expects('set').atMost(0)
+    mock.expects('get').returns(undefined)
+    socketStoreService.remove({tabletennis: '1'} as unknown as TableTennisSocket)
+    mock.verify();
+  })
 
   it('should send message to all sockets', () => {
     const sampleSize = 10
@@ -79,7 +100,30 @@ describe('Tabletennis Socket Service', () => {
 
   })
 
+  it('should not send message when sockets were not found', () => {
+    const mock = sinon.mock(socketStoreService['sockets'])
+    mock.expects('get').returns(undefined)
+    const sampleSize = 10
+    const IgnoreList = givenListOfSocketData(sampleSize, {tabletennis: '2'})
+    socketStoreService.sendToAll('2', TabletennisSocketPaths.tabletennisUpdate)
+    IgnoreList.forEach(socket => {
+      const stub = socket.emit as sinon.SinonStub
+      sinon.assert.notCalled(stub)
+    })
 
+
+  })
+
+  it('should get sockets for given table id', () => {
+    const sampleSize = 10
+    const expectedList = givenListOfSocketData(sampleSize, {tabletennis: '1'})
+    const IgnoreList = givenListOfSocketData(sampleSize, {tabletennis: '2'})
+    registerAll(expectedList)
+    registerAll(IgnoreList)
+
+    const result = socketStoreService.get('1')
+    expect(result).to.deepEqual(expectedList)
+  })
 
   function registerAll(data: TableTennisSocket[]) {
     data.forEach(element => {
