@@ -8,6 +8,7 @@ export function givenTabletennisSocketData(data?: Partial<TableTennisSocket>) {
       id: idCounter.toString(),
       tabletennis: '0',
       emit: stub(),
+      disconnect: stub(),
       handshake: {
         auth: {
           tabletennis: '0'

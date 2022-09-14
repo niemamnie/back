@@ -12,6 +12,6 @@ export function givenTabletennisGameData(data?: Partial<TableTennisGame>) {
   } as TableTennisGame, data)
 }
 export async function givenTabletennisGame(data?: Partial<TableTennisGame>) {
-  return await new TableTennisRepository(testdb)
+  return new TableTennisRepository(testdb)
     .create(givenTabletennisGameData(data))
 }

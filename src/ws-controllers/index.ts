@@ -1,1 +1,2 @@
-export * from './tabletennis-socketio.controller';
+export * from './tabletennis.socketio.controller';
+
