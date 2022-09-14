@@ -12,22 +12,20 @@ export class TableTennisService {
   }
 
   async createNew() {
-    const amount = await this.tableTennisRepository.count();
-    const newGame = TableTennisGame.createRandom(amount.count.toString())
-    return await this.tableTennisRepository.create(newGame);
-
+    const newGame = TableTennisGame.createRandom()
+    return this.tableTennisRepository.create(newGame);
   }
 
-  async getById(id: string) {
-    return await this.tableTennisRepository.findById(id)
+  getById(id: string) {
+    return this.tableTennisRepository.findById(id)
   }
 
 
   async getAll() {
-    return await this.tableTennisRepository.find();
+    return this.tableTennisRepository.find();
   }
 
-  async update(gameId: string, changes: TableTennisGame) {
-    return await this.tableTennisRepository.updateById(gameId, changes)
+  async update(gameId: string, changes: Partial<TableTennisGame>) {
+    return this.tableTennisRepository.updateById(gameId, changes)
   }
 }

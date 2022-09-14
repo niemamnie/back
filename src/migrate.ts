@@ -1,10 +1,11 @@
-import {TestowinoApplication} from './application';
+import {BoardBackendApplication} from './app';
+
 
 export async function migrate(args: string[]) {
   const existingSchema = args.includes('--rebuild') ? 'drop' : 'alter';
   console.log('Migrating schemas (%s existing schema)', existingSchema);
 
-  const app = new TestowinoApplication();
+  const app = new BoardBackendApplication();
   await app.boot();
   await app.migrateSchema({existingSchema});
 

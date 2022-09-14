@@ -16,16 +16,16 @@ export class TableTennisController {
 
   @get("/{id}")
   async getById(@param.path.string('id') id: string) {
-    return await this.tableTennisService.getById(id)
+    return this.tableTennisService.getById(id)
   }
   @get("/")
   async getAll() {
-    return await this.tableTennisService.getAll();
+    return this.tableTennisService.getAll();
   }
 
   @post("/")
   async createNew() {
-    return await this.tableTennisService.createNew();
+    return this.tableTennisService.createNew();
   }
 
 }

@@ -31,12 +31,12 @@ export class TabletennisSocketStoreService {
     return this.sockets.get(tabletennis)
   }
 
-  public sendToAll(gameId: string, channel: TabletennisSocketPaths, data?: any) {
+  public sendToAll(gameId: string, channel: TabletennisSocketPaths,
+    data?: object) {
     const sockets = this.sockets.get(gameId)
     if (sockets) {
-      sockets.forEach(async (socket) => {
-        socket.emit(channel, data);
-      })
+      sockets.forEach((socket) => socket.emit(channel, data)
+      )
     }
   }
 

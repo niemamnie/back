@@ -1,16 +1,14 @@
 
+import {ApplicationConfig} from '@loopback/core';
 import {RestServer} from '@loopback/rest';
 import {SocketIoOptions} from '@loopback/socketio';
 import {BoardBackendApplication} from './app';
-import {ApplicationConfig} from './application';
-export * from './application';
 export {app};
 let app!: BoardBackendApplication;
 export async function main(options: ApplicationConfig = {}) {
   app = new BoardBackendApplication(options);
   await app.boot();
   await app.start();
-  console.log(app.contains('server.socketio'))
 
 
   const url = (await app.getServer(RestServer)).url;
@@ -49,6 +47,8 @@ const config = {
   } as SocketIoOptions,
 };
 
-main(config)
+main(config).catch(e => {
+  console.log(e);
+})
 
 

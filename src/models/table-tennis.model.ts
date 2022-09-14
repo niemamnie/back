@@ -1,4 +1,4 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, PropertyDefinition} from '@loopback/repository';
 
 @model()
 export class TableTennisGame extends Entity {
@@ -8,22 +8,21 @@ export class TableTennisGame extends Entity {
 
   }
 
-  static createRandom(id: string): TableTennisGame {
-    var newGame = new TableTennisGame({id})
-    newGame.id = id;
-    newGame.name = "Random Game: " + newGame.id
+  static createRandom(): TableTennisGame {
+    const newGame = new TableTennisGame()
+    newGame.name = "Random Game"
     return newGame
   }
 
-  @property({id: true})
+  @property({id: true, generated: true} as Partial<PropertyDefinition>)
   id: string;
 
   @property()
   name: string;
 
-  @property()
+  @property({default: 0})
   pointsFirstPlayer: number;
-  @property()
+  @property({default: 0})
   pointsSecondPlayer: number;
 
 

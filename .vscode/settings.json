@@ -31,5 +31,5 @@
   ],
   "mochaExplorer.files": "src/__tests__/**/*.ts",
   "mochaExplorer.require": "ts-node/register",
-  "mochaExplorer.watch": "src/**/*.js"
+  "mochaExplorer.watch": "src/**/*.ts"
 }

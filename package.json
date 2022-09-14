@@ -22,7 +22,7 @@
     "eslint": "lb-eslint --report-unused-disable-directives .",
     "eslint:fix": "npm run eslint -- --fix",
     "pretest": "npm run rebuild",
-    "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "testold": "lb-mocha --allow-console-logs \"dist/__tests__\"",
     "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js && npm run posttest",
     "premigrate": "npm run build",
     "migrate": "node ./dist/migrate",
@@ -31,7 +31,12 @@
     "prestart": "npm run rebuild",
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
-    "rebuild": "npm run clean && npm run build"
+    "rebuild": "npm run clean && npm run build",
+    "precoverage": "npm test",
+    "coverage": "open coverage/index.html",
+    "coverage:ci": "lb-nyc report --reporter=text-lcov | coveralls",
+    "test:ci": "lb-nyc lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "test": "lb-nyc lb-mocha --allow-console-logs \"dist/__tests__\""
   },
   "repository": {
     "type": "git",

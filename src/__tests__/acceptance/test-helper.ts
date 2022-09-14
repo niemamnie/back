@@ -13,7 +13,7 @@ export async function setupApplication(): Promise<AppWithClient> {
     //
     // host: process.env.HOST,
     rest: {
-      port: +(process.env.PORT ?? 3001),
+      port: 3001,
     },
     socketIoOptions: {
       port: 4001,
@@ -23,9 +23,9 @@ export async function setupApplication(): Promise<AppWithClient> {
     } as SocketIoOptions,
   } as any);
 
-  const app = new BoardBackendApplication({
-    rest: restConfig,
-  });
+  const app = new BoardBackendApplication(
+    restConfig
+  );
 
   await app.boot();
   await app.start();
