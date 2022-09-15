@@ -49,7 +49,6 @@ export class TabletennisSocketioController {
         newState)
     } catch (error) {
       console.log(error);
-
     }
   }
 
