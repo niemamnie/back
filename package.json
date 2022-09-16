@@ -14,6 +14,7 @@
   "scripts": {
     "build": "lb-tsc",
     "build:watch": "lb-tsc --watch",
+    "postbuild": "mkdir .\\dist\\data",
     "lint": "npm run eslint && npm run prettier:check",
     "lint:fix": "npm run eslint:fix && npm run prettier:fix",
     "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
@@ -29,14 +30,16 @@
     "preopenapi-spec": "npm run build",
     "openapi-spec": "node ./dist/openapi-spec",
     "prestart": "npm run rebuild",
-    "start": "node -r source-map-support/register .",
+    "start": "node -r source-map-support/register . NODE_ENV=dev",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "npm run clean && npm run build",
     "precoverage": "npm test",
     "coverage": "open coverage/index.html",
     "coverage:ci": "lb-nyc report --reporter=text-lcov | coveralls",
     "test:ci": "lb-nyc lb-mocha --allow-console-logs \"dist/__tests__\"",
-    "test": "lb-nyc lb-mocha --allow-console-logs \"dist/__tests__\""
+    "test": "lb-nyc lb-mocha --allow-console-logs \"dist/__tests__\"",
+    "buildAll": "npm run build && cd ../front && npm run build && cd ../testowino && npm run copyTodest",
+    "copyTodest": "xcopy \"../front/dist\" \"..\\testowino\\dist\\public\\\" /s /h /e /k /f /c /y"
   },
   "repository": {
     "type": "git",
@@ -58,6 +61,7 @@
     "@loopback/rest-explorer": "^5.0.3",
     "@loopback/service-proxy": "^5.0.3",
     "@loopback/socketio": "^0.6.3",
+    "dotenv": "^16.0.2",
     "socket.io": "^4.5.2",
     "tslib": "^2.0.0"
   },

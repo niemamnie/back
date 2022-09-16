@@ -3,16 +3,18 @@ import {ApplicationConfig} from '@loopback/core';
 import {RestServer} from '@loopback/rest';
 import {SocketIoOptions} from '@loopback/socketio';
 import {BoardBackendApplication} from './app';
+import WebServer from './WebServer';
 export {app};
+require('dotenv').config();
 let app!: BoardBackendApplication;
 export async function main(options: ApplicationConfig = {}) {
   app = new BoardBackendApplication(options);
   await app.boot();
   await app.start();
-
-
-  const url = (await app.getServer(RestServer)).url;
-  console.log(`Server is running at ${url}`);
+  const restServer = (await app.getServer(RestServer)) as RestServer
+  const webServer = (await app.getServer(WebServer)) as WebServer
+  console.log(`api Server is running at ${restServer.url}`);
+  console.log(`web Server is running at ${webServer.url}`);
 
   return app;
 }
@@ -25,6 +27,7 @@ const config = {
   rest: {
     port: +(process.env.PORT ?? 3001),
     host: process.env.HOST,
+    basePath: '/api',
     cors: {
       origin: '*',
     },
