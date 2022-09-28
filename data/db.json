@@ -5,7 +5,7 @@
   "models": {
     "TableTennisGame": {
       "0": "{\"id\":\"0\",\"name\":\"Random Game: 0\",\"pointsFirstPlayer\":10,\"pointsSecondPlayer\":9}",
-      "2": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"2\"}",
+      "2": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":99,\"pointsSecondPlayer\":11,\"id\":\"2\"}",
       "3": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"3\"}",
       "4": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"4\"}",
       "5": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"5\"}",
@@ -13,7 +13,7 @@
       "7": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"7\"}",
       "8": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"8\"}",
       "9": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"9\"}",
-      "10": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"10\"}",
+      "10": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":16,\"pointsSecondPlayer\":6,\"id\":\"10\"}",
       "11": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"11\"}",
       "12": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"12\"}",
       "13": "{\"name\":\"Random Game\",\"pointsFirstPlayer\":0,\"pointsSecondPlayer\":0,\"id\":\"13\"}",

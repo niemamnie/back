@@ -1,4 +1,5 @@
 export enum TabletennisSocketPaths {
-  tabletennisGet = 'tabletennis/get',
-  tabletennisUpdate = 'tabletennis/update',
+  get = 'tabletennis/get',
+  update = 'tabletennis/update',
+  winner = 'tabeltennis/winner'
 }

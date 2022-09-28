@@ -82,7 +82,7 @@ describe('Tabletennis Socket Service', () => {
     registerAll(sendToList)
     registerAll(IgnoreList)
 
-    socketStoreService.sendToAll('1', TabletennisSocketPaths.tabletennisUpdate)
+    socketStoreService.sendToAll('1', TabletennisSocketPaths.update)
 
     const resultSendToList = socketStoreService.get('1')
     const resultIgnoreList = socketStoreService.get('2')
@@ -91,7 +91,7 @@ describe('Tabletennis Socket Service', () => {
 
     resultSendToList?.forEach(socket => {
       const stub = socket.emit as sinon.SinonStub
-      sinon.assert.calledWithMatch(stub, TabletennisSocketPaths.tabletennisUpdate)
+      sinon.assert.calledWithMatch(stub, TabletennisSocketPaths.update)
     })
     resultIgnoreList?.forEach(socket => {
       const stub = socket.emit as sinon.SinonStub
@@ -105,7 +105,7 @@ describe('Tabletennis Socket Service', () => {
     mock.expects('get').returns(undefined)
     const sampleSize = 10
     const IgnoreList = givenListOfSocketData(sampleSize, {tabletennis: '2'})
-    socketStoreService.sendToAll('2', TabletennisSocketPaths.tabletennisUpdate)
+    socketStoreService.sendToAll('2', TabletennisSocketPaths.update)
     IgnoreList.forEach(socket => {
       const stub = socket.emit as sinon.SinonStub
       sinon.assert.notCalled(stub)

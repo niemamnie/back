@@ -1,2 +1,3 @@
-
-export * from './table-tennis.repository';
+export * from './game-player.repository';
+export * from './player.repository';
+export * from './tabletennis-game.repository';

@@ -1,3 +1,3 @@
-export * from './table-tennis.service';
+export * from './tabletennis-game.service';
 export * from './tabletennisSocketStore.service';
 

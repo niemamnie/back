@@ -20,7 +20,7 @@ export class BoardBackendApplication extends BootMixin(ServiceMixin(RepositoryMi
         // Customize ControllerBooter Conventions here
         dirs: ['controllers'],
         extensions: ['.controller.js'],
-        nested: true,
+        nested: true
       },
       socketioControllers: {
         dirs: ['ws-controllers'],

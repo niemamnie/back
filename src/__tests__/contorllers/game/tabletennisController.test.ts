@@ -1,19 +1,19 @@
 import sinon, {SinonMock} from 'sinon'
-import {TableTennisController} from '../../../controllers'
-import {TableTennisRepository} from '../../../repositories'
-import {TableTennisService} from '../../../services'
+import {TableTennisGameController} from '../../../controllers'
+import {TabletennisGameService} from '../../../services'
+import {getDep} from '../../fixtures/helpers/dependecy.helper'
 
 describe('Tabletennis Controller', () => {
-  let tabletennisController!: TableTennisController
-  let tabletennisService!: TableTennisService
+  let tabletennisController!: TableTennisGameController
+  let tabletennisService!: TabletennisGameService
   let tabletennisServiceMock!: SinonMock
 
   before(() => {
-    tabletennisService = new TableTennisService(undefined as unknown as TableTennisRepository)
+    tabletennisController = getDep(TableTennisGameController)
+    tabletennisService = getDep(TabletennisGameService)
     tabletennisServiceMock = sinon.mock(
       tabletennisService
     )
-    tabletennisController = new TableTennisController(tabletennisService)
   })
   beforeEach(() => {
     tabletennisServiceMock.restore();

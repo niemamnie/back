@@ -29,7 +29,9 @@ export async function setupApplication(): Promise<AppWithClient> {
 
   await app.boot();
   await app.start();
+
   const server = await app.getServer(RestServer);
+
   const client = createRestAppClient({restServer: server})
 
   return {app, client};
