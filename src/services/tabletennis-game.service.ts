@@ -1,18 +1,18 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
-import {TabletennisGame} from '../models';
-import {TabletennisGameRepository} from '../repositories';
+import {Game} from '../models';
+import {GameRepository} from '../repositories';
 
 @injectable({scope: BindingScope.SINGLETON})
-export class TabletennisGameService {
-  @repository(TabletennisGameRepository)
-  private tabletennisGameRepository: TabletennisGameRepository;
+export class GameService {
+  @repository(GameRepository)
+  private tabletennisGameRepository: GameRepository;
   constructor(
   ) {
   }
 
   async createNew() {
-    const newGame = TabletennisGame.createRandom()
+    const newGame = Game.createRandom('random') //TODO add param for gametype
     return this.tabletennisGameRepository.create(newGame);
   }
 
@@ -21,21 +21,13 @@ export class TabletennisGameService {
   }
 
 
-  async getAll() {
+  getAll() {
     return this.tabletennisGameRepository.find();
   }
 
-  async update(gameId: string, changes: Partial<TabletennisGame>) {
+  update(gameId: string, changes: Partial<Game>) {
     return this.tabletennisGameRepository.updateById(gameId, changes)
   }
 
-  create(newGame: Partial<TabletennisGame>) {
-    return this.tabletennisGameRepository.create(newGame);
-  }
 
-
-
-  getNewIdForGame(gameId: string) {
-
-  }
 }

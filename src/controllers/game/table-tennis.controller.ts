@@ -2,14 +2,14 @@
 
 import {BindingScope, injectable, service} from '@loopback/core';
 import {api, get, param, post} from '@loopback/rest';
-import {TabletennisGameService} from '../../services';
+import {GameService} from '../../services';
 
 
 // import {inject} from '@loopback/core';
 @api({basePath: "/tabletennis"})
 @injectable({scope: BindingScope.SINGLETON})
 export class TableTennisGameController {
-  constructor(@service(TabletennisGameService) private tableTennisService: TabletennisGameService) {
+  constructor(@service(GameService) private tableTennisService: GameService) {
     console.log('created tablet tennis controller');
 
   }

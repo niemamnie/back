@@ -1,6 +1,8 @@
-import {TableTennisGameController} from '../../../controllers';
-import {GamePlayerRepository, PlayerRepository, TabletennisGameRepository} from '../../../repositories';
-import {TabletennisGameService} from '../../../services';
+import {Getter} from '@loopback/core';
+import {TableTennisGameController as GameController} from '../../../controllers';
+import {GamePlayerRepository, GameRepository, PlayerRepository} from '../../../repositories';
+import {GameService} from '../../../services';
+import GamePlayerService from '../../../services/game-player.service';
 import {testdb} from '../datasources/testdb.datasource';
 
 const map = new Map<(new (...args: any) => any), Object>();
@@ -20,34 +22,44 @@ function create(typeName: string) {
   switch (typeName) {
     case PlayerRepository.name: return givenPlayerRepository();
     case GamePlayerRepository.name: return givenGamePlayerRepository();
-    case TabletennisGameRepository.name: return givenTabletennisGameRepository();
-    case TabletennisGameService.name: return givenTabletennisGameService();
-    case TableTennisGameController.name: return givenTableTennisGameController();
+    case GameRepository.name: return givenGameRepository();
+    case GameService.name: return givenTabletennisGameService();
+    case GameController.name: return givenGameController();
+    case GamePlayerService.name: return givenGamePlayerService();
     default: throw new Error(`${typeName}'s creation in test is not defined`);
   }
 }
 
-export function givenPlayerRepository() {
-  const repo = new PlayerRepository(testdb);
+function givenPlayerRepository() {
+  const gamePlayerRepo = getDep(GamePlayerRepository)
+  const repo = new PlayerRepository(testdb, Getter.fromValue(gamePlayerRepo));
   return repo;
 }
 
-export function givenGamePlayerRepository() {
-  const repo = new GamePlayerRepository(testdb, async () => getDep(PlayerRepository));
+function givenGamePlayerRepository() {
+  const repo = new GamePlayerRepository(testdb);
   return repo
 }
-export function givenTabletennisGameRepository() {
-  const repo = new TabletennisGameRepository(testdb, async () => getDep(GamePlayerRepository));
+function givenGameRepository() {
+  const repo = new GameRepository(testdb, async () => getDep(GamePlayerRepository));
   return repo;
 }
-export function givenTabletennisGameService() {
-  const service = new TabletennisGameService()
-  service['tabletennisGameRepository'] = getDep(TabletennisGameRepository)
+function givenTabletennisGameService() {
+  const service = new GameService()
+  service['tabletennisGameRepository'] = getDep(GameRepository)
   return service;
 }
 
 
-export function givenTableTennisGameController() {
-  const controller = new TableTennisGameController(getDep(TabletennisGameService))
+function givenGameController() {
+  const controller = new GameController(getDep(GameService))
   return controller;
+}
+function givenGamePlayerService() {
+  const service = new GamePlayerService(
+    getDep(GamePlayerRepository),
+    getDep(PlayerRepository),
+    getDep(GameRepository)
+  );
+  return service
 }

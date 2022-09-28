@@ -1,13 +1,13 @@
 import {Getter, inject} from '@loopback/core';
 import {DefaultCrudRepository, HasManyRepositoryFactory, repository} from '@loopback/repository';
 import {DbDataSource} from '../datasources';
-import {GamePlayer, TabletennisGame, TabletennisGameWithRelations} from '../models';
+import {Game, GamePlayer, GameWithRelations} from '../models';
 import {GamePlayerRepository} from './game-player.repository';
 
-export class TabletennisGameRepository extends DefaultCrudRepository<
-  TabletennisGame,
-  typeof TabletennisGame.prototype.id,
-  TabletennisGameWithRelations
+export class GameRepository extends DefaultCrudRepository<
+  Game,
+  typeof Game.prototype.id,
+  GameWithRelations
 > {
   public readonly player: HasManyRepositoryFactory<
     GamePlayer, typeof GamePlayer.prototype.id>
@@ -16,7 +16,7 @@ export class TabletennisGameRepository extends DefaultCrudRepository<
     @repository.getter('GamePlayerRepository')
     gamePlayerRepositoryGetter: Getter<GamePlayerRepository>
   ) {
-    super(TabletennisGame, dataSource);
+    super(Game, dataSource);
     this.player = this.createHasManyRepositoryFactoryFor(
       'gamePlayers', gamePlayerRepositoryGetter)
   }

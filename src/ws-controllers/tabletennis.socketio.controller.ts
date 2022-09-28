@@ -3,8 +3,8 @@
 import {service} from '@loopback/core';
 import {socketio} from '@loopback/socketio';
 import TableTennisSocket from '../intern/TableTennisSocket';
-import {TabletennisGame} from '../models';
-import {TabletennisGameService, TabletennisSocketStoreService} from '../services';
+import {Game} from '../models';
+import {GameService, TabletennisSocketStoreService} from '../services';
 import {TabletennisSocketPaths} from './TabletennisSocketPaths';
 
 // import {inject} from '@loopback/core';
@@ -12,7 +12,7 @@ export class TabletennisSocketioController {
   constructor(
     @socketio.socket() // Equivalent to `@inject('ws.socket')`
     private socket: TableTennisSocket,
-    @service(TabletennisGameService) private tabletennisService: TabletennisGameService,
+    @service(GameService) private tabletennisService: GameService,
     @service(TabletennisSocketStoreService)
     private socketStore: TabletennisSocketStoreService
   ) {
@@ -32,7 +32,7 @@ export class TabletennisSocketioController {
   }
 
   @socketio.subscribe(TabletennisSocketPaths.update)
-  async update(gameChange: TabletennisGame) {
+  async update(gameChange: Game) {
     try {
       const game =
         await this.tabletennisService.getById(this.socket.tabletennis)

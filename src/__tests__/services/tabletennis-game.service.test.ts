@@ -1,14 +1,14 @@
 import {expect} from '@loopback/testlab';
-import {TabletennisGame} from '../../models';
+import {Game} from '../../models';
 import {GamePlayerRepository} from '../../repositories';
-import {TabletennisGameService} from '../../services';
+import {GameService} from '../../services';
 import {getDep} from '../fixtures/helpers/dependecy.helper';
 
-describe('Tabletennis Service', () => {
-  let tabletennisService: TabletennisGameService;
+describe('Tabletennis game Service', () => {
+  let tabletennisService: GameService;
   let gamePlayerRepository: GamePlayerRepository;
   before(async () => {
-    tabletennisService = getDep(TabletennisGameService)
+    tabletennisService = getDep(GameService)
     gamePlayerRepository = getDep(GamePlayerRepository)
 
 
@@ -22,7 +22,7 @@ describe('Tabletennis Service', () => {
   it('should create new table and return it', async () => {
     const result = await tabletennisService.createNew()
     expect(result).to.not.undefined()
-    expect(result).to.deepEqual(Object.assign(new TabletennisGame(), {
+    expect(result).to.deepEqual(Object.assign(new Game(), {
       id: '1',
       name: 'Random Game',
     } as any))
@@ -48,6 +48,16 @@ describe('Tabletennis Service', () => {
     expect(result.length).to.equal(createdTables.length)
 
   })
+
+
+  it('should update name of tabletennis game', async () => {
+    const given = await tabletennisService.createNew();
+    const update = {name: 'upated name'};
+    await tabletennisService.update(given.id, update);
+    const result = await tabletennisService.getById(given.id);
+    expect(result.name).to.equal(update.name)
+  })
+
 
 
 })
