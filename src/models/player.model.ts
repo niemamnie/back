@@ -1,5 +1,4 @@
-import {Entity, hasOne, model, property, PropertyDefinition} from '@loopback/repository';
-import {GamePlayer} from './game-player.model';
+import {Entity, model, property, PropertyDefinition} from '@loopback/repository';
 
 @model()
 export class Player extends Entity {
@@ -9,8 +8,6 @@ export class Player extends Entity {
   name: string;
 
 
-  @hasOne(() => GamePlayer)
-  gamePlayer: GamePlayer;
 }
 
 export class PlayerRelations {

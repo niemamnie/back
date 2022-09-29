@@ -9,5 +9,6 @@ export function givenPlayerData(data?: Partial<Player>) {
 }
 export function givenPlayer(data?: Partial<Player>) {
   const player = givenPlayerData(data);
-  return getDep(PlayerRepository).create(player);
+  const dep = getDep(PlayerRepository)
+  return dep.create(player);
 }

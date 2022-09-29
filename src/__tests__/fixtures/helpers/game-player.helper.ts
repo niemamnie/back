@@ -8,7 +8,7 @@ export function givenGamePlayerData(data?: Partial<GamePlayer>,
   player?: Player, game?: Game) {
 
   const gamePlayer = new GamePlayer();
-  if (player) gamePlayer.playerId = player.id
+  if (player) gamePlayer.player = player
   if (game) gamePlayer.gameId = game.id
   return gamePlayer
 }

@@ -9,11 +9,11 @@ export class GamePlayerRepository extends DefaultCrudRepository<
   GamePlayerRelations
 > {
 
+
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
 
   ) {
     super(GamePlayer, dataSource);
-
   }
 }

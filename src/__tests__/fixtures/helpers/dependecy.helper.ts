@@ -12,9 +12,11 @@ export function getDep<T>(type: new (...args: any) => T): T {
   if (map.has(type))
     return map.get(type) as unknown as T
   else {
-    const dep = create(type.name)
-    map.set(type, dep)
-    return dep as unknown as T
+    const dep = {}
+    const createdDep = create(type.name)
+    map.set(type, createdDep)
+    Object.assign(dep, createdDep)
+    return createdDep as unknown as T
   }
 
 }
@@ -31,13 +33,14 @@ function create(typeName: string) {
 }
 
 function givenPlayerRepository() {
-  const gamePlayerRepo = getDep(GamePlayerRepository)
-  const repo = new PlayerRepository(testdb, Getter.fromValue(gamePlayerRepo));
+  // const gamePlayerRepo = getDep(GamePlayerRepository)
+  const repo = new PlayerRepository(testdb);
   return repo;
 }
 
 function givenGamePlayerRepository() {
-  const repo = new GamePlayerRepository(testdb);
+  const playerRepo = getDep(PlayerRepository)
+  const repo = new GamePlayerRepository(testdb, Getter.fromValue(playerRepo));
   return repo
 }
 function givenGameRepository() {
