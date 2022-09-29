@@ -13,10 +13,14 @@ export class GamePlayer extends Entity {
   id: string;
   @property()
   inGameIndex: number;
-
   @property({default: 0})
   points: number;
 
+
+  @property({
+    type: 'string',
+  })
+  gameId?: string;
 }
 export class GamePlayerRelations {
 }
