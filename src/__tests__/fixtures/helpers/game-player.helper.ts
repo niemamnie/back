@@ -1,5 +1,5 @@
 import {Game, GamePlayer, Player} from '../../../models';
-import {GameRepository, PlayerRepository} from '../../../repositories';
+import {GamePlayerRepository, GameRepository, PlayerRepository} from '../../../repositories';
 import {getDep} from './dependecy.helper';
 import {givenPlayerData} from './player.helper';
 import {givenGameData} from './tabletennisGame.helper';
@@ -21,8 +21,11 @@ export function givenGamePlayerDataGenPlayerAndGame(data?: Partial<GamePlayer>,)
 
 export async function givenGamePlayerDataOfNewPlayerAndGame(data?: Partial<GamePlayer>) {
   const createdData = givenGamePlayerDataGenPlayerAndGame();
-  await getDep(GameRepository).create(createdData.game);
-  await getDep(PlayerRepository).create(createdData.player);
+  createdData.game = await getDep(GameRepository).create(createdData.game);
+  createdData.player = await getDep(PlayerRepository).create(createdData.player);
+  createdData.gamePlayer.playerId = createdData.player.id
+  createdData.gamePlayer.gameId = createdData.game.id
+  createdData.gamePlayer = await getDep(GamePlayerRepository).create(createdData.gamePlayer)
   return createdData
 }
 

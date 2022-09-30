@@ -1,5 +1,5 @@
-import {DataObject, Entity, model, property, belongsTo} from '@loopback/repository';
-import {Player} from './player.model';
+import {belongsTo, DataObject, Entity, model, property} from '@loopback/repository';
+import {Player, PlayerWithRelations} from './player.model';
 
 @model()
 export class GamePlayer extends Entity {
@@ -25,5 +25,6 @@ export class GamePlayer extends Entity {
   gameId?: string;
 }
 export class GamePlayerRelations {
+  player: PlayerWithRelations
 }
 export type GamePlayerWithRelations = GamePlayer & GamePlayerRelations

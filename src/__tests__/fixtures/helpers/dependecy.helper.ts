@@ -1,4 +1,5 @@
 import {Getter} from '@loopback/core';
+import {DefaultCrudRepository} from '@loopback/repository';
 import {TableTennisGameController as GameController} from '../../../controllers';
 import {GamePlayerRepository, GameRepository, PlayerRepository} from '../../../repositories';
 import {GameService} from '../../../services';
@@ -7,6 +8,13 @@ import {testdb} from '../datasources/testdb.datasource';
 
 const map = new Map<(new (...args: any) => any), Object>();
 
+export async function clearRepos() {
+  for (const [_, object] of map) {
+    if (object['deleteAll'] !== undefined) {
+      await (object as DefaultCrudRepository<never, never, never>).deleteAll()
+    }
+  }
+}
 
 export function getDep<T>(type: new (...args: any) => T): T {
   if (map.has(type))

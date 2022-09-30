@@ -21,9 +21,9 @@ export default class GamePlayerService {
 
   async addPlayerToGame(player: Player, gameId: string) {
     if (!(await this.playerRepository.exists(player.id)
-      && await this.gameRepository.exists(gameId)))
-      throw new Error(
-        'Could not add player to game: Player or Game does not exist')
+      && await this.gameRepository.exists(gameId))) {
+      throw Error('could not add player to game: player or game is not defined')
+    }
     const game = new GamePlayer({playerId: player.id, gameId});
 
     return this.gamePlayerRepository.create(game)

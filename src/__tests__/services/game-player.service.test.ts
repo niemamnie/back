@@ -1,18 +1,18 @@
 import {expect} from '@loopback/testlab';
-import {GameRepository, PlayerRepository} from '../../repositories';
+import {GamePlayer, GamePlayerWithRelations} from '../../models';
 import GamePlayerService from '../../services/game-player.service';
-import {getDep} from '../fixtures/helpers/dependecy.helper';
-import {givenPlayer} from '../fixtures/helpers/player.helper';
+import {clearRepos, getDep} from '../fixtures/helpers/dependecy.helper';
+import {givenGamePlayerDataOfNewPlayerAndGame} from '../fixtures/helpers/game-player.helper';
+import {givenPlayer, givenPlayerData} from '../fixtures/helpers/player.helper';
 import {givenGame} from '../fixtures/helpers/tabletennisGame.helper';
 
 describe('Game Player Service tests', () => {
   let gamePlayerService: GamePlayerService;
-  let playerRepository: PlayerRepository;
-  let gameRepository: GameRepository;
   before(() => {
     gamePlayerService = getDep(GamePlayerService)
-    playerRepository = getDep(PlayerRepository)
-    gameRepository = getDep(GameRepository)
+  })
+  before(async () => {
+    await clearRepos()
   })
 
   it('should create new game player for given player', async () => {
@@ -20,11 +20,30 @@ describe('Game Player Service tests', () => {
     const game = await givenGame();
 
     const result = await gamePlayerService.addPlayerToGame(player, game.id)
-    const gamePlayer = await gamePlayerService.findById(result.id)
     expect(result).to.Object();
-    // expect(result.player).to.equal(player.id)
-    // expect(result.gameId).to.equal(game.id)
+    expect(result.playerId).to.equal(player.id)
+    expect(result.gameId).to.equal(game.id)
   })
 
+  it('should throw error, becouse player id was missing', async () => {
+    const player = givenPlayerData({id: 'non existing'});
+    const game = await givenGame();
+
+    await expect(gamePlayerService.addPlayerToGame(player, game.id)).to.rejected()
+  })
+
+  it('should find given game player by id', async () => {
+    const {gamePlayer, player} = await givenGamePlayerDataOfNewPlayerAndGame()
+
+    const result = await gamePlayerService.findById(gamePlayer.id);
+
+    expect(result).to.containEql(new GamePlayer({...gamePlayer, player: player} as GamePlayerWithRelations));
+  })
+
+  it('should ... becouse gameplayer does not exist', async () => {
+
+    await expect(gamePlayerService.findById('i do not exists')).to.rejected()
+  })
 
 })
+
