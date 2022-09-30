@@ -4,7 +4,7 @@ import {GamePlayerRepository} from '../../repositories';
 import {GameService} from '../../services';
 import {getDep} from '../fixtures/helpers/dependecy.helper';
 
-describe('Tabletennis game Service', () => {
+describe('Game Service', () => {
   let tabletennisService: GameService;
   let gamePlayerRepository: GamePlayerRepository;
   before(async () => {

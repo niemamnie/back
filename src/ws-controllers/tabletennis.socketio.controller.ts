@@ -2,58 +2,59 @@
 
 import {service} from '@loopback/core';
 import {socketio} from '@loopback/socketio';
-import TableTennisSocket from '../intern/TableTennisSocket';
-import {Game} from '../models';
-import {GameService, TabletennisSocketStoreService} from '../services';
-import {TabletennisSocketPaths} from './TabletennisSocketPaths';
+import GameSocket from '../intern/TableTennisSocket';
+import {GameService, GameSocketStoreService} from '../services';
+import GamePlayerService from '../services/game-player.service';
+import {GamesocketPaths as GameSocketPaths} from './TabletennisSocketPaths';
 
 // import {inject} from '@loopback/core';
-export class TabletennisSocketioController {
+export class GameSocketioController {
   constructor(
     @socketio.socket() // Equivalent to `@inject('ws.socket')`
-    private socket: TableTennisSocket,
-    @service(GameService) private tabletennisService: GameService,
-    @service(TabletennisSocketStoreService)
-    private socketStore: TabletennisSocketStoreService
+    private socket: GameSocket,
+    @service(GameService) private gameService: GameService,
+    @service(GameSocketStoreService)
+    private socketStore: GameSocketStoreService,
+    @service(GamePlayerService)
+    private gamePlayerService: GamePlayerService
   ) {
   }
 
   @socketio.connect()
-  async connect(socket: TableTennisSocket) {
-    if (socket.handshake.auth.tabletennis) {
-      socket.tabletennis = socket.handshake.auth.tabletennis
-      const game = await this.tabletennisService.getById(socket.tabletennis!)
+  async connect(socket: GameSocket) {
+    if (socket.handshake.auth.gameId) {
+      socket.gameId = socket.handshake.auth.gameId
+      const game = await this.gameService.getById(socket.gameId!)
       this.socketStore.add(socket)
-      socket.emit(TabletennisSocketPaths.get, game)
-
+      socket.emit(GameSocketPaths.get, game)
     } else {
       socket.disconnect();
     }
   }
 
-  @socketio.subscribe(TabletennisSocketPaths.update)
-  async update(gameChange: Game) {
+  @socketio.subscribe(GameSocketPaths.update)
+  async update(playerId: string, change: number) {
     try {
       const game =
-        await this.tabletennisService.getById(this.socket.tabletennis)
+        await this.gameService.getById(this.socket.gameId)
       // if (gameChange.pointsFirstPlayer)
       //   gameChange.pointsFirstPlayer += game.pointsFirstPlayer
       // if (gameChange.pointsSecondPlayer)
       //   gameChange.pointsSecondPlayer += game.pointsSecondPlayer
-      await this.tabletennisService.update(game.id, gameChange)
+      // await this.gameService.update(game.id, gameChange)
       const newState =
-        await this.tabletennisService.getById(this.socket.tabletennis)
+        await this.gameService.getById(this.socket.gameId)
       this.socketStore.sendToAll(
-        this.socket.tabletennis,
-        TabletennisSocketPaths.update,
+        this.socket.gameId,
+        GameSocketPaths.update,
         newState)
     } catch (error) {
       console.log(error);
     }
   }
-  @socketio.subscribe(TabletennisSocketPaths.winner)
+  @socketio.subscribe(GameSocketPaths.winner)
   async winner(playerId: number) {
-    const game = await this.tabletennisService.getById(this.socket.tabletennis)
+    const game = await this.gameService.getById(this.socket.gameId)
     let playerWon;
     // if (playerId === 1) {
     //   playerWon = new TabletennisWinner(game.pointsFirstPlayer, 'first Player')
@@ -61,8 +62,8 @@ export class TabletennisSocketioController {
     //   playerWon =
     //     new TabletennisWinner(game.pointsSecondPlayer, 'second Player')
     // }
-    this.socketStore.sendToAll(this.socket.tabletennis,
-      TabletennisSocketPaths.winner, playerWon)
+    this.socketStore.sendToAll(this.socket.gameId,
+      GameSocketPaths.winner, playerWon)
   }
 
 

@@ -32,4 +32,8 @@ export default class GamePlayerService {
   findById(id: string) {
     return this.gamePlayerRepository.findById(id, {include: ['player']})
   }
+
+  changePointsOfPlayer(playerId: string, pointsChange: number) {
+
+  }
 }

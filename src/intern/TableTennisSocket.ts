@@ -1,5 +1,6 @@
 import {Socket} from 'socket.io';
 
-export default class TableTennisSocket extends Socket {
-  tabletennis: string
+export default class GameSocket extends Socket {
+  gameId: string;
+  gameType: string;
 }

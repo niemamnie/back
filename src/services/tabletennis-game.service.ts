@@ -21,6 +21,7 @@ export class GameService {
   }
 
 
+
   getAll() {
     return this.tabletennisGameRepository.find();
   }

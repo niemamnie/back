@@ -1,10 +1,13 @@
 import {Getter} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
 import {TableTennisGameController as GameController} from '../../../controllers';
+import GameSocket from '../../../intern/TableTennisSocket';
 import {GamePlayerRepository, GameRepository, PlayerRepository} from '../../../repositories';
-import {GameService} from '../../../services';
+import {GameService, GameSocketStoreService} from '../../../services';
 import GamePlayerService from '../../../services/game-player.service';
+import {GameSocketioController} from '../../../ws-controllers';
 import {testdb} from '../datasources/testdb.datasource';
+import {givenTabletennisSocketData as givenGameSocket} from './tabletennisSocekt.helper';
 
 const map = new Map<(new (...args: any) => any), Object>();
 
@@ -36,6 +39,9 @@ function create(typeName: string) {
     case GameService.name: return givenTabletennisGameService();
     case GameController.name: return givenGameController();
     case GamePlayerService.name: return givenGamePlayerService();
+    case GameSocketStoreService.name: return givenTabletennisSocketStoreService();
+    case GameSocketioController.name: return givenTabletennisSocketioController();
+    case GameSocket.name: return givenGameSocke();
     default: throw new Error(`${typeName}'s creation in test is not defined`);
   }
 }
@@ -73,4 +79,26 @@ function givenGamePlayerService() {
     getDep(GameRepository)
   );
   return service
+}
+
+function givenTabletennisSocketStoreService() {
+  const service = new GameSocketStoreService();
+
+  return service
+}
+
+
+function givenTabletennisSocketioController() {
+  const controller = new GameSocketioController(
+    getDep(GameSocket),
+    getDep(GameService),
+    getDep(GameSocketStoreService),
+    getDep(GamePlayerService))
+
+  return controller
+}
+
+function givenGameSocke() {
+  const socket = givenGameSocket()
+  return socket
 }

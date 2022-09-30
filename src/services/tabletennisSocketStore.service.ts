@@ -1,28 +1,28 @@
 import {BindingScope, injectable} from '@loopback/core';
-import TableTennisSocket from '../intern/TableTennisSocket';
-import {TabletennisSocketPaths} from '../ws-controllers/TabletennisSocketPaths';
+import GameSocket from '../intern/TableTennisSocket';
+import {GamesocketPaths} from '../ws-controllers/TabletennisSocketPaths';
 
 @injectable({scope: BindingScope.SINGLETON})
-export class TabletennisSocketStoreService {
-  private readonly sockets = new Map<string, TableTennisSocket[]>()
+export class GameSocketStoreService {
+  private readonly sockets = new Map<string, GameSocket[]>()
 
-  public add(socket: TableTennisSocket) {
-    if (socket.tabletennis) {
-      const sockets = this.sockets.get(socket.tabletennis)
+  public add(socket: GameSocket) {
+    if (socket.gameId) {
+      const sockets = this.sockets.get(socket.gameId)
       if (sockets) {
         sockets.push(socket)
       } else {
-        this.sockets.set(socket.tabletennis, [socket])
+        this.sockets.set(socket.gameId, [socket])
       }
     }
   }
 
-  public remove(socket: TableTennisSocket) {
-    if (socket.tabletennis) {
-      const sockets = this.sockets.get(socket.tabletennis)
+  public remove(socket: GameSocket) {
+    if (socket.gameId) {
+      const sockets = this.sockets.get(socket.gameId)
       if (sockets) {
         const filtered = sockets.filter((s) => s.id !== socket.id)
-        this.sockets.set(socket.tabletennis, filtered)
+        this.sockets.set(socket.gameId, filtered)
       }
     }
   }
@@ -31,7 +31,7 @@ export class TabletennisSocketStoreService {
     return this.sockets.get(tabletennis)
   }
 
-  public sendToAll(gameId: string, channel: TabletennisSocketPaths,
+  public sendToAll(gameId: string, channel: GamesocketPaths,
     data?: object) {
     const sockets = this.sockets.get(gameId)
     if (sockets) {

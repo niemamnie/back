@@ -1,7 +1,7 @@
 import {stub} from 'sinon';
-import TableTennisSocket from '../../../intern/TableTennisSocket';
+import GameSocket from '../../../intern/TableTennisSocket';
 let idCounter = 0;
-export function givenTabletennisSocketData(data?: Partial<TableTennisSocket>) {
+export function givenTabletennisSocketData(data?: Partial<GameSocket>) {
   idCounter++
   return Object.assign(
     {
@@ -14,13 +14,13 @@ export function givenTabletennisSocketData(data?: Partial<TableTennisSocket>) {
           tabletennis: '0'
         } as unknown
       }
-    } as unknown as TableTennisSocket, data
+    } as unknown as GameSocket, data
   );
 }
 
 
 
-export function givenListOfSocketData(amount: number, data?: Partial<TableTennisSocket>) {
+export function givenListOfSocketData(amount: number, data?: Partial<GameSocket>) {
   const list = []
   for (let i = 0; i < amount; i++) {
     list.push(givenTabletennisSocketData(data))
