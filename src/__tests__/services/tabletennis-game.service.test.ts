@@ -19,24 +19,24 @@ describe('Game Service', () => {
     await gamePlayerRepository.deleteAll()
   })
 
-  it('should create new table and return it', async () => {
+  it('should create new game and return it', async () => {
     const result = await tabletennisService.createNew()
     expect(result).to.not.undefined()
     expect(result).to.deepEqual(Object.assign(new Game({gameType: 'random'}), {
-      id: '1',
+      id: result.id,
       name: 'Random Game',
     } as any))
   })
 
 
-  it('should find table by id', async () => {
+  it('should find game by id', async () => {
     const result = await tabletennisService.createNew()
     const readedResult = await tabletennisService.getById(result.id);
 
     expect(result).to.deepEqual(readedResult)
   })
 
-  it('should get all tables', async () => {
+  it('should get all game', async () => {
     const sampleSize = 10;
     const createdTables = []
     for (let index = 0; index < sampleSize; index++) {
@@ -50,7 +50,7 @@ describe('Game Service', () => {
   })
 
 
-  it('should update name of tabletennis game', async () => {
+  it('should update name of game', async () => {
     const given = await tabletennisService.createNew();
     const update = {name: 'upated name'};
     await tabletennisService.update(given.id, update);
