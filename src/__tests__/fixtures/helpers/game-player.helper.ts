@@ -1,4 +1,4 @@
-import {Game, GamePlayer, Player} from '../../../models';
+import {Game, GamePlayer, GamePlayerWithRelations, Player} from '../../../models';
 import {GamePlayerRepository, GameRepository, PlayerRepository} from '../../../repositories';
 import {getDep} from './dependecy.helper';
 import {givenPlayerData} from './player.helper';
@@ -33,4 +33,13 @@ export function givenGamePlayer(data?: Partial<GamePlayer>,
   player?: Player, game?: Game) {
   const gamePlayer = givenGamePlayerData(data, player, game)
   return getDep(GamePlayerRepository).create(gamePlayer)
+}
+
+
+export function givenGamePlayerWithRelationsData(data?:
+  Partial<GamePlayer>, player?: Player, game?: Game) {
+  const gamePlayer =
+    givenGamePlayerData(data, player, game) as GamePlayerWithRelations
+  gamePlayer.player = player
+  return gamePlayer
 }

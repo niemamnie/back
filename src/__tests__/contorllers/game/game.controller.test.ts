@@ -1,15 +1,15 @@
 import sinon, {SinonMock} from 'sinon'
-import {TableTennisGameController} from '../../../controllers'
+import {GameController} from '../../../controllers'
 import {GameService} from '../../../services'
 import {getDep} from '../../fixtures/helpers/dependecy.helper'
 
-describe('Tabletennis Controller', () => {
-  let tabletennisController!: TableTennisGameController
+describe('Game Controller', () => {
+  let tabletennisController!: GameController
   let tabletennisService!: GameService
   let tabletennisServiceMock!: SinonMock
 
   before(() => {
-    tabletennisController = getDep(TableTennisGameController)
+    tabletennisController = getDep(GameController)
     tabletennisService = getDep(GameService)
     tabletennisServiceMock = sinon.mock(
       tabletennisService

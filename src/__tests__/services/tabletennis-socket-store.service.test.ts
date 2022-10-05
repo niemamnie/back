@@ -4,7 +4,7 @@ import GameSocket from '../../intern/TableTennisSocket';
 import {GameSocketStoreService} from '../../services';
 import {GamesocketPaths} from '../../ws-controllers/TabletennisSocketPaths';
 import {givenListOfSocketData, givenTabletennisSocketData} from '../fixtures/helpers/tabletennisSocekt.helper';
-describe('Tabletennis Socket Service', () => {
+describe('Game Socket Service', () => {
   let socketStoreService = new GameSocketStoreService()
 
   beforeEach(() => {

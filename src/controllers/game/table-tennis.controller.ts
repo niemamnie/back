@@ -6,26 +6,24 @@ import {GameService} from '../../services';
 
 
 // import {inject} from '@loopback/core';
-@api({basePath: "/tabletennis"})
+@api({basePath: "/game"})
 @injectable({scope: BindingScope.SINGLETON})
-export class TableTennisGameController {
-  constructor(@service(GameService) private tableTennisService: GameService) {
-    console.log('created tablet tennis controller');
-
+export class GameController {
+  constructor(@service(GameService) private gameService: GameService) {
   }
 
   @get("/{id}")
   async getById(@param.path.string('id') id: string) {
-    return this.tableTennisService.getById(id)
+    return this.gameService.getById(id)
   }
   @get("/")
   async getAll() {
-    return this.tableTennisService.getAll();
+    return this.gameService.getAll();
   }
 
   @post("/")
   async createNew() {
-    return this.tableTennisService.createNew();
+    return this.gameService.createNew();
   }
 
 }

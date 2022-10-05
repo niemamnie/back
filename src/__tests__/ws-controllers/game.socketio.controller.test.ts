@@ -4,12 +4,14 @@ import {SinonMock} from 'sinon'
 import {Handshake} from 'socket.io/dist/socket'
 import GameSocket from '../../intern/TableTennisSocket'
 import {GamePlayer} from '../../models'
+import TabletennisWinner from '../../models/tabletennis/table-tennis-winner'
 import {GameService, GameSocketStoreService} from '../../services'
 import GamePlayerService from '../../services/game-player.service'
-import {GameSocketioController} from '../../ws-controllers/tabletennis.socketio.controller'
-import {GamesocketPaths as GameSocketPaths} from '../../ws-controllers/TabletennisSocketPaths'
+import {GameSocketioController} from '../../ws-controllers/game-socketio.controller'
+import {GamesocketPaths, GamesocketPaths as GameSocketPaths} from '../../ws-controllers/TabletennisSocketPaths'
 import {getDep} from '../fixtures/helpers/dependecy.helper'
-import {givenGamePlayerData} from '../fixtures/helpers/game-player.helper'
+import {givenGamePlayerData, givenGamePlayerWithRelationsData} from '../fixtures/helpers/game-player.helper'
+import {givenPlayerData} from '../fixtures/helpers/player.helper'
 import {givenGameData} from '../fixtures/helpers/tabletennisGame.helper'
 import {givenTabletennisSocketData} from '../fixtures/helpers/tabletennisSocekt.helper'
 
@@ -143,5 +145,24 @@ describe('Game SocketIo Controller', () => {
   it('should log thrown error', async () => {
     gamePlayerServiceMock.expects('changePointsOfPlayer').throws()
     should(() => socketioController.update('playerId', 1)).not.throw()
+  })
+
+  it('should declare winner of a game and inform sockets', async () => {
+    const givenPlayer = givenPlayerData()
+    const givenGamePlayer = givenGamePlayerWithRelationsData({}, givenPlayer);
+    const expectedWinner = new TabletennisWinner(givenGamePlayer.points,
+      givenPlayer.name)
+    socket.gameId = 'gameid'
+    gamePlayerServiceMock.expects('findByIdWrelations').atMost(1)
+      .withArgs(givenGamePlayer.id).onFirstCall()
+      .returns(givenGamePlayer)
+    socketStoreMock.expects('sendToAll').atMost(1)
+      .withArgs(socket.gameId, GamesocketPaths.winner, expectedWinner)
+
+    await socketioController.winner(givenGamePlayer.id)
+
+    gamePlayerServiceMock.verify()
+    socketStoreMock.verify()
+
   })
 })

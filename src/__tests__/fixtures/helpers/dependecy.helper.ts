@@ -1,6 +1,6 @@
 import {Getter} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
-import {TableTennisGameController as GameController} from '../../../controllers';
+import {GameController} from '../../../controllers';
 import GameSocket from '../../../intern/TableTennisSocket';
 import {GamePlayerRepository, GameRepository, PlayerRepository} from '../../../repositories';
 import {GameService, GameSocketStoreService} from '../../../services';
