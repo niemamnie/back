@@ -6,12 +6,12 @@ export function givenTabletennisSocketData(data?: Partial<GameSocket>) {
   return Object.assign(
     {
       id: idCounter.toString(),
-      tabletennis: '0',
+      gameId: 'game 0',
       emit: stub(),
       disconnect: stub(),
       handshake: {
         auth: {
-          tabletennis: '0'
+          gameId: '0'
         } as unknown
       }
     } as unknown as GameSocket, data

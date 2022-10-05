@@ -3,6 +3,7 @@
 import {service} from '@loopback/core';
 import {socketio} from '@loopback/socketio';
 import GameSocket from '../intern/TableTennisSocket';
+import TabletennisWinner from '../models/tabletennis/table-tennis-winner';
 import {GameService, GameSocketStoreService} from '../services';
 import GamePlayerService from '../services/game-player.service';
 import {GamesocketPaths as GameSocketPaths} from './TabletennisSocketPaths';
@@ -35,15 +36,8 @@ export class GameSocketioController {
   @socketio.subscribe(GameSocketPaths.update)
   async update(playerId: string, change: number) {
     try {
-      const game =
-        await this.gameService.getById(this.socket.gameId)
-      // if (gameChange.pointsFirstPlayer)
-      //   gameChange.pointsFirstPlayer += game.pointsFirstPlayer
-      // if (gameChange.pointsSecondPlayer)
-      //   gameChange.pointsSecondPlayer += game.pointsSecondPlayer
-      // await this.gameService.update(game.id, gameChange)
-      const newState =
-        await this.gameService.getById(this.socket.gameId)
+      const newState = await this.gamePlayerService.changePointsOfPlayer(playerId, change)
+
       this.socketStore.sendToAll(
         this.socket.gameId,
         GameSocketPaths.update,
@@ -53,17 +47,12 @@ export class GameSocketioController {
     }
   }
   @socketio.subscribe(GameSocketPaths.winner)
-  async winner(playerId: number) {
-    const game = await this.gameService.getById(this.socket.gameId)
-    let playerWon;
-    // if (playerId === 1) {
-    //   playerWon = new TabletennisWinner(game.pointsFirstPlayer, 'first Player')
-    // } else {
-    //   playerWon =
-    //     new TabletennisWinner(game.pointsSecondPlayer, 'second Player')
-    // }
+  async winner(gamePlayerId: string) {
+    //TODO remove/mark/create record of ended game
+    const gamePlayer = await this.gamePlayerService.findById(gamePlayerId)
+    const winner = new TabletennisWinner(gamePlayer.points, gamePlayer.player.name)
     this.socketStore.sendToAll(this.socket.gameId,
-      GameSocketPaths.winner, playerWon)
+      GameSocketPaths.winner, winner)
   }
 
 

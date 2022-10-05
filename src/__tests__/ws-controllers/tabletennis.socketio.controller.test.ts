@@ -31,16 +31,23 @@ describe('Game SocketIo Controller', () => {
 
     socket = socketioController['socket']
 
+
     gameServiceMock = sinon.mock(gameService)
     socketStoreMock = sinon.mock(socketStore)
     socketMock = sinon.mock(socket)
     gamePlayerServiceMock = sinon.mock(gamePlayerService)
   })
   beforeEach(() => {
-
     gameServiceMock.restore()
     socketStoreMock.restore()
     socketMock.restore()
+    gamePlayerServiceMock.restore()
+
+    gameServiceMock = sinon.mock(gameService)
+    socketStoreMock = sinon.mock(socketStore)
+    socketMock = sinon.mock(socket)
+    gamePlayerServiceMock = sinon.mock(gamePlayerService)
+
   })
 
   it('should on conncet to socket set socket.gameId prop', async () => {
@@ -105,34 +112,33 @@ describe('Game SocketIo Controller', () => {
 
     await socketioController.update(givenGamePlayer.playerId, gameScoreChange)
 
-    socketMock.verify();
-    gameServiceMock.verify();
+    gamePlayerServiceMock.verify();
     socketStoreMock.verify();
   })
 
-  it('should update a tennis game with given second player negative change', async () => {
-    const gameScoreChange = -1
-    const givenGamePlayer = givenGamePlayerData(
-      {gameId: 'gameId', playerId: 'playerId'});
-    const updatedGamePlayer = {
-      ...givenGamePlayer,
-      points: givenGamePlayer.points + gameScoreChange
-    } as GamePlayer
-    socket.gameId = givenGamePlayer.gameId
-    gamePlayerServiceMock.expects('changePointsOfPlayer').atMost(1)
-      .withArgs(givenGamePlayer.playerId, gameScoreChange)
-      .onFirstCall().returns(updatedGamePlayer)
-    socketStoreMock.expects('sendToAll')
-      .withArgs(socket.gameId,
-        GameSocketPaths.update,
-        updatedGamePlayer)
+  it('should update a tennis game with given second player negative change',
+    async () => {
+      const gameScoreChange = -1
+      const givenGamePlayer = givenGamePlayerData(
+        {gameId: 'gameId', playerId: 'playerId', points: 10});
+      const updatedGamePlayer = {
+        ...givenGamePlayer,
+        points: givenGamePlayer.points + gameScoreChange
+      } as GamePlayer
+      socket.gameId = givenGamePlayer.gameId
+      gamePlayerServiceMock.expects('changePointsOfPlayer')
+        .withArgs(givenGamePlayer.playerId, gameScoreChange)
+        .onFirstCall().returns(updatedGamePlayer)
+      socketStoreMock.expects('sendToAll')
+        .withArgs(socket.gameId,
+          GameSocketPaths.update,
+          updatedGamePlayer)
 
-    await socketioController.update(givenGamePlayer.playerId, gameScoreChange)
+      await socketioController.update(givenGamePlayer.playerId, gameScoreChange)
 
-    socketMock.verify();
-    gameServiceMock.verify();
-    socketStoreMock.verify();
-  })
+      gamePlayerServiceMock.verify();
+      socketStoreMock.verify();
+    })
 
   it('should log thrown error', async () => {
     gamePlayerServiceMock.expects('changePointsOfPlayer').throws()

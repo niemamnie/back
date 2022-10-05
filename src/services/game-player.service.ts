@@ -33,7 +33,9 @@ export default class GamePlayerService {
     return this.gamePlayerRepository.findById(id, {include: ['player']})
   }
 
-  changePointsOfPlayer(playerId: string, pointsChange: number) {
-
+  changePointsOfPlayer(playerId: string, pointsChange: number): Promise<GamePlayer> {
+    return this.findById(playerId)
   }
+
+
 }

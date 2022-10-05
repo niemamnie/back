@@ -22,7 +22,7 @@ describe('Game Service', () => {
   it('should create new table and return it', async () => {
     const result = await tabletennisService.createNew()
     expect(result).to.not.undefined()
-    expect(result).to.deepEqual(Object.assign(new Game(), {
+    expect(result).to.deepEqual(Object.assign(new Game({gameType: 'random'}), {
       id: '1',
       name: 'Random Game',
     } as any))

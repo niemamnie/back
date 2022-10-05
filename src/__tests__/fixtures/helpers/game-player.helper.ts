@@ -7,7 +7,7 @@ import {givenGameData} from './tabletennisGame.helper';
 export function givenGamePlayerData(data?: Partial<GamePlayer>,
   player?: Player, game?: Game) {
 
-  const gamePlayer = new GamePlayer();
+  const gamePlayer = new GamePlayer(data);
   if (player) gamePlayer.playerId = player.id
   if (game) gamePlayer.gameId = game.id
   return gamePlayer

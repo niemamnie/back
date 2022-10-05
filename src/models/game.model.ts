@@ -7,7 +7,7 @@ export class Game extends Entity {
   @property({id: true, generated: true} as Partial<PropertyDefinition>)
   id: string;
 
-  @property()
+  @property({required: true})
   gameType: string;
 
   @property()
@@ -18,7 +18,7 @@ export class Game extends Entity {
 
   constructor(data?: Partial<Game>) {
     super(data);
-    if (!this.gameType) throw new Error('unknown/undefined game type is not supported')
+
   }
 
   static createRandom(gameType: string): Game {
