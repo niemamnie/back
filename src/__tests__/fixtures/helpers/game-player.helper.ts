@@ -19,7 +19,7 @@ export function givenGamePlayerDataGenPlayerAndGame(data?: Partial<GamePlayer>,)
   return {gamePlayer: givenGamePlayerData(gamePlayer), player, game}
 }
 
-export async function givenGamePlayerDataOfNewPlayerAndGame(data?: Partial<GamePlayer>) {
+export async function givenGamePlayerOfNewPlayerAndGame(data?: Partial<GamePlayer>) {
   const createdData = givenGamePlayerDataGenPlayerAndGame();
   createdData.game = await getDep(GameRepository).create(createdData.game);
   createdData.player = await getDep(PlayerRepository).create(createdData.player);
@@ -29,3 +29,8 @@ export async function givenGamePlayerDataOfNewPlayerAndGame(data?: Partial<GameP
   return createdData
 }
 
+export function givenGamePlayer(data?: Partial<GamePlayer>,
+  player?: Player, game?: Game) {
+  const gamePlayer = givenGamePlayerData(data, player, game)
+  return getDep(GamePlayerRepository).create(gamePlayer)
+}

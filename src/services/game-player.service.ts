@@ -29,12 +29,18 @@ export default class GamePlayerService {
     return this.gamePlayerRepository.create(game)
   }
 
-  findById(id: string) {
+  findByIdWrelations(id: string) {
     return this.gamePlayerRepository.findById(id, {include: ['player']})
   }
+  findById(id: string) {
+    return this.gamePlayerRepository.findById(id)
+  }
 
-  changePointsOfPlayer(playerId: string, pointsChange: number): Promise<GamePlayer> {
-    return this.findById(playerId)
+  async changePointsOfPlayer(gamePlayerId: string, pointsChange: number): Promise<GamePlayer> {
+    const gamePlayer = await this.findByIdWrelations(gamePlayerId)
+    await this.gamePlayerRepository.updateById(gamePlayerId,
+      {points: gamePlayer.points + pointsChange})
+    return this.findById(gamePlayerId)
   }
 
 

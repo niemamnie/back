@@ -49,7 +49,7 @@ export class GameSocketioController {
   @socketio.subscribe(GameSocketPaths.winner)
   async winner(gamePlayerId: string) {
     //TODO remove/mark/create record of ended game
-    const gamePlayer = await this.gamePlayerService.findById(gamePlayerId)
+    const gamePlayer = await this.gamePlayerService.findByIdWrelations(gamePlayerId)
     const winner = new TabletennisWinner(gamePlayer.points, gamePlayer.player.name)
     this.socketStore.sendToAll(this.socket.gameId,
       GameSocketPaths.winner, winner)
