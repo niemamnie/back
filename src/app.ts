@@ -15,7 +15,6 @@ export class BoardBackendApplication extends BootMixin(ServiceMixin(RepositoryMi
     this.component(SocketIoComponent)
     this.booters(SocketIoBooter);
     this.bootOptions = {
-
       controllers: {
         // Customize ControllerBooter Conventions here
         dirs: ['controllers'],

@@ -1,11 +1,12 @@
-import {Application, CoreBindings, inject} from '@loopback/core';
-import {RestServer, RestServerConfig} from '@loopback/rest';
+import {Application, ApplicationConfig, CoreBindings, inject} from '@loopback/core';
+import {RestServer} from '@loopback/rest';
 import path from 'path';
 
 export default class WebServer extends RestServer {
   constructor(@inject(CoreBindings.APPLICATION_INSTANCE) app: Application,
-    config?: RestServerConfig) {
-    super(app, {
+    @inject(CoreBindings.APPLICATION_CONFIG)
+    config?: ApplicationConfig) {
+    super(app, config.web ?? {
       port: 3002
     })
     const servePath = process.env.webPath ?? '/public'

@@ -1,7 +1,7 @@
 
 import {ApplicationConfig} from '@loopback/core';
 import {RestServer} from '@loopback/rest';
-import {SocketIoOptions} from '@loopback/socketio';
+import {SocketIoOptions, SocketIoServer} from '@loopback/socketio';
 import {BoardBackendApplication} from './app';
 import WebServer from './WebServer';
 export {app};
@@ -13,8 +13,11 @@ export async function main(options: ApplicationConfig = {}) {
   await app.start();
   const restServer = (await app.getServer(RestServer)) as RestServer
   const webServer = (await app.getServer(WebServer)) as WebServer
+  const socketServer = await app.getServer('servers.SocketServer') as SocketIoServer
   console.log(`api Server is running at ${restServer.url}`);
   console.log(`web Server is running at ${webServer.url}`);
+  console.log(`socket Server is running at ${socketServer.url}`);
+
 
   return app;
 }
@@ -25,7 +28,7 @@ if (!(require.main === module)) {
 // Run the application
 const config = {
   rest: {
-    port: +(process.env.PORT ?? 3001),
+    port: +process.env.PORT ?? 3001,
     host: process.env.HOST,
     basePath: '/api',
     cors: {
@@ -43,11 +46,17 @@ const config = {
     },
   },
   socketIoOptions: {
-    port: 4001,
     cors: {
       origin: '*',
     },
   } as SocketIoOptions,
+
+  httpServerOptions: {
+    port: 4001,
+  },
+  web: {
+    port: 3002
+  }
 };
 
 main(config).catch(e => {
