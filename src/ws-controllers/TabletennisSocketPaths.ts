@@ -1,5 +1,5 @@
 export enum GamesocketPaths {
-  get = 'tabletennis/get',
-  update = 'tabletennis/update',
-  winner = 'tabeltennis/winner'
+  get = 'game/get',
+  update = 'game/update',
+  winner = 'game/winner'
 }

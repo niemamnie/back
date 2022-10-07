@@ -12,7 +12,7 @@ export class GamePlayer extends Entity {
   @property()
   inGameIndex: number;
   @property({default: 0})
-  points;
+  points: number;
 
   @belongsTo(() => Player)
   playerId: string;

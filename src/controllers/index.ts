@@ -1,1 +1,2 @@
-export * from "./game/table-tennis.controller";
+export * from "./game/game.controller";
+export * from './player.controller';

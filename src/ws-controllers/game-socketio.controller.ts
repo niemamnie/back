@@ -19,10 +19,14 @@ export class GameSocketioController {
     @service(GamePlayerService)
     private gamePlayerService: GamePlayerService
   ) {
+    console.log('socket controller created');
+
   }
 
   @socketio.connect()
   async connect(socket: GameSocket) {
+    console.log('socket connect');
+
     if (socket.handshake.auth.gameId) {
       socket.gameId = socket.handshake.auth.gameId
       const game = await this.gameService.getById(socket.gameId!)

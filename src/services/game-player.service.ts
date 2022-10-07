@@ -29,6 +29,13 @@ export default class GamePlayerService {
     return this.gamePlayerRepository.create(game)
   }
 
+  async addPlayerIdToGame(playerId: string, gameId: string) {
+    // TODO change player to player id
+    return this.addPlayerToGame(await this.playerRepository.findById(playerId),
+      gameId)
+  }
+
+
   findByIdWrelations(id: string) {
     return this.gamePlayerRepository.findById(id, {include: ['player']})
   }

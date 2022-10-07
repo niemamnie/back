@@ -23,7 +23,14 @@ export class GameService {
 
 
   getAll() {
-    return this.tabletennisGameRepository.find();
+    return this.tabletennisGameRepository.find({
+      include: [{
+        relation: 'gamePlayers',
+        scope: {
+          include: ['player']
+        }
+      }]
+    });
   }
 
   update(gameId: string, changes: Partial<Game>) {
